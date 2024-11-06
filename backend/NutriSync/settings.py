@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'users',
+    'ingredientes',
+    'categorias',
+    'recetas',
+    
 ]
 
 MIDDLEWARE = [
@@ -81,7 +85,7 @@ WSGI_APPLICATION = 'NutriSync.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'NutriSyncDB',
+        'NAME': 'NutriSyncBD',
         'USER': '',  # Usuario en blanco para autenticación de Windows
         'PASSWORD': '',
         'HOST': 'Jorgeimlz\\SQLEXPRESS',
@@ -123,7 +127,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',  # Permitir acceso a todos los usuarios a ciertas rutas
     ],
 }
 
