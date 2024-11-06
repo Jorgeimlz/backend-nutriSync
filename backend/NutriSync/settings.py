@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-u#4qt-py&w6@=ki6+fp!2v0es8x)=!hif_l)+mn!@or%h42$qj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'https://683d-45-188-56-22.ngrok-free.app/',  # Agrega aquí el dominio de Ngrok
+]
 
 
 # Application definition
@@ -44,6 +48,8 @@ INSTALLED_APPS = [
     'ingredientes',
     'categorias',
     'recetas',
+    'dieta',
+    'planes_alimenticios',
     
 ]
 

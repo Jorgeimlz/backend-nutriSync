@@ -1,5 +1,13 @@
 from django.urls import path
-from .views import lista_recetas, agregar_receta, detalle_receta, editar_receta, eliminar_receta, obtener_ingredientes
+from .views import (
+    lista_recetas,
+    agregar_receta,
+    detalle_receta,
+    editar_receta,
+    eliminar_receta,
+    obtener_ingredientes,
+    agregar_ingrediente_a_receta  # Si decides implementar esta vista
+)
 
 urlpatterns = [
     path('', lista_recetas, name='lista_recetas'),
@@ -8,4 +16,5 @@ urlpatterns = [
     path('<int:receta_id>/', detalle_receta, name='detalle_receta'),
     path('<int:receta_id>/editar/', editar_receta, name='editar_receta'),
     path('<int:receta_id>/eliminar/', eliminar_receta, name='eliminar_receta'),
+    path('<int:receta_id>/ingredientes/', agregar_ingrediente_a_receta, name='agregar_ingrediente_a_receta'),  # Ruta opcional
 ]
