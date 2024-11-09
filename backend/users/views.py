@@ -62,7 +62,7 @@ def update_user_role(request, user_id):
     
     return Response({"message": "Rol actualizado correctamente"}, status=status.HTTP_200_OK)
 
-@api_view(['PATCH'])
+@api_view(['GET', 'PATCH'])
 @permission_classes([IsAuthenticated])
 def update_user(request, user_id):
     if not request.user.is_staff:
@@ -72,12 +72,17 @@ def update_user(request, user_id):
         user = CustomUser.objects.get(id=user_id)
     except CustomUser.DoesNotExist:
         return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
-    
-    serializer = UserSerializer(user, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
+
+    if request.method == 'GET':
+        serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'PATCH':
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
@@ -91,5 +96,3 @@ def delete_user(request, user_id):
         return Response({"message": "Usuario eliminado correctamente"}, status=status.HTTP_204_NO_CONTENT)
     except CustomUser.DoesNotExist:
         return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
-    
-

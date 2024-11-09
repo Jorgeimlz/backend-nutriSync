@@ -22,15 +22,17 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/users/', include('users.urls')),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('api/ingredientes/', include('ingredientes.urls')),
-    path('api/categorias/', include('categorias.urls')),
-    path('api/recetas/', include('recetas.urls')),
-    path('api/dietas/', include('dieta.urls')),  # Asegúrate de que esta línea esté presente
-    path('api/planes-alimenticios/', include('planes_alimenticios.urls')),  # Asegúrate de que esta línea esté presente
+    path('admin/', admin.site.urls),  # Admin de Django
+    path('api/users/', include('users.urls')),  # Rutas de usuarios
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # Obtener token JWT
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # Refrescar token JWT
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),  # Swagger UI para documentación
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),  # ReDoc UI para documentación
+    path('api/ingredientes/', include('ingredientes.urls')),  # Rutas de ingredientes
+    path('api/categorias/', include('categorias.urls')),  # Rutas de categorías
+    path('api/recetas/', include('recetas.urls')),  # Rutas de recetas
+    path('api/dietas/', include('dieta.urls')),  # Rutas de dietas
+    path('api/planes-alimenticios/', include('planes_alimenticios.urls')),  # Rutas de planes alimenticios
 ]
+
+

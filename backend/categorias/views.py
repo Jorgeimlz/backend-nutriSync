@@ -1,11 +1,15 @@
-# categorias/views.py
-
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny  # Permitir acceso a todos
 from .models import Categoria
 from .serializers import CategoriaSerializer
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # Permitir acceso sin autenticación
+def get_categorias(request):
+    categorias = Categoria.objects.all()
+    serializer = CategoriaSerializer(categorias, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def lista_categorias(request):
@@ -42,10 +46,3 @@ def detalle_categoria(request, pk):
     elif request.method == 'DELETE':
         categoria.delete()
         return Response(status=204)
-    
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])  # Puedes cambiar a AllowAny si quieres que sea accesible sin autenticación
-def get_categorias(request):
-    categorias = Categoria.objects.all()
-    serializer = CategoriaSerializer(categorias, many=True)
-    return Response(serializer.data)

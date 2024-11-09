@@ -1,17 +1,18 @@
+# recetas/views.py
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Receta, IngredientesRecetas
-from .serializers import RecetaSerializer, IngredientesRecetasSerializer
+from .models import Receta
+from .serializers import RecetaSerializer
 from ingredientes.models import Ingrediente
-from ingredientes.serializers import IngredienteSerializer 
+from ingredientes.serializers import IngredienteSerializer
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def lista_recetas(request):
-    """Listar todas las recetas."""
-    recetas = Receta.objects.all()
+    """Listar todas las recetas en orden de las más nuevas a las más antiguas."""
+    recetas = Receta.objects.all().order_by('-id')  # Ordena por ID descendente, las más nuevas primero
     serializer = RecetaSerializer(recetas, many=True)
     return Response(serializer.data)
 
@@ -21,9 +22,9 @@ def agregar_receta(request):
     """Agregar una nueva receta."""
     serializer = RecetaSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=201)
-    return Response(serializer.errors, status=400)
+        serializer.save()  # Guarda la receta con sus ingredientes
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -40,7 +41,7 @@ def detalle_receta(request, receta_id):
     try:
         receta = Receta.objects.get(id=receta_id)
     except Receta.DoesNotExist:
-        return Response({"error": "Receta no encontrada."}, status=404)
+        return Response({"error": "Receta no encontrada."}, status=status.HTTP_404_NOT_FOUND)
 
     serializer = RecetaSerializer(receta)
     return Response(serializer.data)
@@ -52,13 +53,13 @@ def editar_receta(request, receta_id):
     try:
         receta = Receta.objects.get(id=receta_id)
     except Receta.DoesNotExist:
-        return Response({"error": "Receta no encontrada."}, status=404)
+        return Response({"error": "Receta no encontrada."}, status=status.HTTP_404_NOT_FOUND)
 
     serializer = RecetaSerializer(receta, data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
-    return Response(serializer.errors, status=400)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
@@ -67,22 +68,6 @@ def eliminar_receta(request, receta_id):
     try:
         receta = Receta.objects.get(id=receta_id)
         receta.delete()
-        return Response({"message": "Receta eliminada."}, status=204)
+        return Response({"message": "Receta eliminada."}, status=status.HTTP_204_NO_CONTENT)
     except Receta.DoesNotExist:
-        return Response({"error": "Receta no encontrada."}, status=404)
-
-# Vista para agregar ingredientes a recetas (opcional)
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def agregar_ingrediente_a_receta(request, receta_id):
-    """Agregar un ingrediente a una receta existente."""
-    try:
-        receta = Receta.objects.get(id=receta_id)
-    except Receta.DoesNotExist:
-        return Response({"error": "Receta no encontrada."}, status=404)
-
-    serializer = IngredientesRecetasSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save(receta=receta)
-        return Response(serializer.data, status=201)
-    return Response(serializer.errors, status=400)
+        return Response({"error": "Receta no encontrada."}, status=status.HTTP_404_NOT_FOUND)
