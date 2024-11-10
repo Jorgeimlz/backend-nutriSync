@@ -16,7 +16,7 @@ SECRET_KEY = 'django-insecure-u#4qt-py&w6@=ki6+fp!2v0es8x)=!hif_l)+mn!@or%h42$qj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1', 'ngrok.io', 'nutrisync.onrender.com']  # Incluye la URL de tu backend en Render
+ALLOWED_HOSTS = ["*"]  # Incluye la URL de tu backend en Render
 
 # Application definition
 
@@ -56,6 +56,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://*.ngrok.io", 
     "https://nutrisync.onrender.com",  # Asegúrate de agregar esta URL para permitir peticiones desde Render
 ]
+
 
 CORS_ALLOW_METHODS = [
     'GET',
