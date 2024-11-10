@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from datetime import timedelta
 from urllib.parse import urlparse
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -95,23 +96,16 @@ WSGI_APPLICATION = 'NutriSync.wsgi.application'
 # Database
 # Configure la base de datos usando la URL proporcionada por Render
 
-DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://nutrisyncbdd_user:Mrz4Q6j8jede8gAguJdm8s4jChvhpnV3@dpg-csnu6eggph6c73bkub5g-a.oregon-postgres.render.com/nutrisyncbdd')
 
-url = urlparse(DATABASE_URL)
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': url.path[1:],  # El nombre de la base de datos es la parte después del '/'
-        'USER': url.username,
-        'PASSWORD': url.password,
-        'HOST': url.hostname,
-        'PORT': url.port,
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
+
+DATABASES = {
+    "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    
+}
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -165,5 +159,6 @@ AUTH_USER_MODEL = 'users.CustomUser'
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+MEIDA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

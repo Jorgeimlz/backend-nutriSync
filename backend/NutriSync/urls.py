@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 # Configura la vista del esquema para Swagger
 schema_view = get_schema_view(
@@ -34,5 +35,7 @@ urlpatterns = [
     path('api/dietas/', include('dieta.urls')),  # Rutas de dietas
     path('api/planes-alimenticios/', include('planes_alimenticios.urls')),  # Rutas de planes alimenticios
 ]
+
+urlpatterns += staticfiles_urlpatterns()  # Añade las rutas de archivos estáticos
 
 
