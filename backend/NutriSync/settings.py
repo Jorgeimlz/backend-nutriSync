@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'dieta',
     'planes_alimenticios',
     'drf_yasg',
+    'NutriSync',
+    
 ]
 
 MIDDLEWARE = [
